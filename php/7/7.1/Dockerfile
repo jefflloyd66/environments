@@ -1,11 +1,17 @@
 FROM php:7-apache
 
-COPY php.7.1.2.ini /usr/local/etc/php
+RUN apt-get update \
+    && apt-get install -y wget \
+    && echo 'deb http://packages.dotdeb.org jessie all' >> /etc/apt/sources.list \
+    && echo 'deb-src http://packages.dotdeb.org jessie all' >> /etc/apt/sources.list \
+    && wget https://www.dotdeb.org/dotdeb.gpg \
+    && apt-key add dotdeb.gpg \
+    && apt-get update \
+    && apt-get install -y php7.0-dev zip unzip \
+    && docker-php-ext-install zip \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y \
-  unzip \
-  zip \
-  && rm -rf /var/lib/apt/lists/*
+COPY php.7.1.2.ini /usr/local/etc/php
 
 RUN pecl install xdebug-2.5.0 \
   && docker-php-ext-enable xdebug
@@ -15,9 +21,4 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
   && php composer-setup.php \
   && mv composer.phar /usr/local/bin/composer \
   && php -r "unlink('composer-setup.php');"
-
-RUN mkdir /composer
-COPY composer.json /composer
-RUN cd /composer && composer update
-ENV PATH="${PATH}:/composer/vendor/bin"
 
