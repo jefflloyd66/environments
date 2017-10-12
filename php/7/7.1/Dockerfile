@@ -1,4 +1,4 @@
-FROM php:7-apache
+FROM php:7-cli
 
 RUN apt-get update \
     && apt-get install -y wget \
@@ -7,8 +7,8 @@ RUN apt-get update \
     && wget https://www.dotdeb.org/dotdeb.gpg \
     && apt-key add dotdeb.gpg \
     && apt-get update \
-    && apt-get install -y php7.0-dev zip unzip \
-    && docker-php-ext-install zip \
+    && apt-get install -y php7.0-dev zip unzip libmcrypt-dev mysql-client git --no-install-recommends \
+    && docker-php-ext-install zip mcrypt pdo_mysql \
     && rm -rf /var/lib/apt/lists/*
 
 COPY php.7.1.2.ini /usr/local/etc/php

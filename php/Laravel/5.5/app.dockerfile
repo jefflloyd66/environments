@@ -5,3 +5,4 @@ RUN composer global require "laravel/installer"
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
 
 COPY bashrc /root/.bashrc
+
