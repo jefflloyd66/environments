@@ -27,7 +27,7 @@ services:
       - app
 
   database:
-    image: mysql:5.6
+    image: mysql:latest
     volumes:
       - dbdata:/var/lib/mysql
     environment:
