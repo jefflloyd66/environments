@@ -12,6 +12,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY php.7.1.2.ini /usr/local/etc/php
+COPY config/gitconfig /root/.gitconfig
 
 RUN pecl install xdebug-2.5.0 \
   && docker-php-ext-enable xdebug
@@ -21,4 +22,3 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
   && php composer-setup.php \
   && mv composer.phar /usr/local/bin/composer \
   && php -r "unlink('composer-setup.php');"
-
